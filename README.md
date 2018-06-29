@@ -1,3 +1,3 @@
 # Algorithms
 
-​ 	A section of algorithms.
+   ​ A section of algorithms.
