@@ -1,0 +1,46 @@
+\documentclass[]{ctexart}
+\usepackage{amsthm}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper,scale=0.8]{geometry}
+\CTEXsetup[format={\Large\bfseries}]{section}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xeCJK}
+%opening
+\newtheorem{theorem}{定理}[section]
+\newtheorem{definition}{定义}[section]
+\newtheorem{lemma}{引理}[section]
+\newtheorem{corollary}{推论}[section]
+\newtheorem{proposition}{命题}[section]
+\newtheorem{conjecture}{猜想}[section]
+\newtheorem{remark}{注}[section]
+\newtheorem{example}{例}[section]
+\newtheorem{problem}{问题}[section]
+\newtheorem{assumption}{假设}[section]
+\newtheorem{conditions}{条件}[section]
+\newtheorem{property}{性质}[section]
+\newtheorem{algorithm}{算法}[section]
+%\renewcommand{\proofname}{\bf 证明}
+\title{算法总结}
+\author{徐亦周}
+
+\begin{document}
+	
+	\maketitle
+	\tableofcontents
+	\newpage
+	
+	\input{sections/algebra}
+	\input{sections/combinatorics}
+	\input{sections/polynomial}
+	\input{sections/analysis}
+	\input{sections/graph_theory}
+	\input{sections/search}
+	\input{sections/divide_and_conquer}
+	\input{sections/strings}
+	\input{sections/dynamic_programming}
+	\input{sections/data_structure}
+	\input{sections/game_theory}
+	\input{sections/ml_randomize}
+	
+\end{document}

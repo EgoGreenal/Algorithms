@@ -1,0 +1,14 @@
+\section{多项式}
+
+\subsection{快速傅里叶变换}
+
+\subsection{多项式初等运算}
+在本节中，我们考虑商环$K[x]/x^n$中的多项式，在这个商环中，可以比较容易地进行比加减法、卷积更为复杂的一些出等运算.
+
+\begin{problem}[多项式求逆]
+	已知$F(x)$，求解$F(x)G(x)\equiv1({\rm mod\ } x^n)$的$G(x)$.
+\end{problem}
+
+\begin{algorithm}
+	考虑递归计算. 假设已知$F(x)H(x)\equiv1({\rm mod\ } x^{\lceil\frac{n}{2}\rceil})$，又显然$F(x)G(x)\equiv1({\rm mod\ } x^{\lceil\frac{n}{2}\rceil})$，那么$F(x)(G(x)-H(x))\equiv0({\rm mod\ } x^{\lceil\frac{n}{2}\rceil})$，即$G(x)-H(x)\equiv0({\rm mod\ } x^{\lceil\frac{n}{2}\rceil})$，平方得$G(x)^2+H(x)^2-2G(x)H(x)\equiv0({\rm mod\ } x^{\lceil\frac{n}{2}\rceil})$. 两边同时乘以$F(x)$，$F(x)G(x)^2+F(x)H(x)^2-2F(x)G(x)H(x)\equiv0({\rm mod\ } x^n)$，由$F(x)G(x)\equiv1({\rm mod\ } x^n)$，$G(x)+F(x)H(x)^2-2H(x)\equiv0({\rm mod\ } x^n)$，则$G(x)\equiv H(x)(2-F(x)H(x))({\rm mod\ } x^n)$.
+\end{algorithm}

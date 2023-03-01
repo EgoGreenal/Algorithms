@@ -1,0 +1,209 @@
+\section{代数}
+在这一章中，我们以几个特定问题为切入点，提出解决它们的代数结构和方法.
+
+\subsection{Pólya计数}
+我们首先来研究陪集的性质，由于左右陪集有着类似的性质，下面我们总是只研究其中一个. 由我们已经学过的代数知识，不难得到如下六条性质：
+\begin{itemize}
+	\item[1] $\forall g\in G,|H|=|Hg|$
+	\item[2] $\forall g\in G,g\in Hh$
+	\item[3] $Hg=H\iff g\in H$
+	\item[4] $Ha=Hb\iff ab^{-1}\in H$
+	\item[5] $Ha\cap Hb\neq\varnothing\Rightarrow Ha=Hb$
+	\item[6] $\mathop{\cap}\limits_{g\in G}Hg=G$
+\end{itemize}
+
+设$H,G$为两个群，且$H\leqslant G$，则定义$G/H:=\{gH|g\in G\}$，$H$在$G$中的\textbf{指数}$[G:H]:=|G/H|$. 由上述陪集的性质1,5,6，不难发现如下定理：
+\begin{theorem}[拉格朗日定理]
+	设$H\leqslant G$，则$|G|=[G:H]|H|$.特别地，当$G$有限时，$|H|$整除$|G|$.
+\end{theorem}
+
+给定一个集合$M$和群$G$，若映射$\phi:G\times M\rightarrow M$满足$\phi(1,k)=k,\phi(g,\phi(s,k))=\phi(gs,k)$，则称$\phi$为$G$对$M$的一个\textbf{（左）群作用}，或称群$G$作用于集合$M$，简记为$g(x):=\phi(g,x)$. $n$阶置换群$S_n$对$n$元函数集合的作用是一个常见的例子. 现在我们考虑作用在$X$上的群$G$以及对应的群作用$\phi$，对于$x\in X$，定义$G(x):=\{g(x)|g\in G\}$为$x$的\textbf{轨道}，定义$G^x:=\{g|g\in G,g(x)=x\}$为$x$的\textbf{稳定子}.
+
+\begin{theorem}[轨道-稳定子定理]
+	对于作用于集合$X$上的群$G$，对$x\in X$，有$|G^x||G(x)|=|G|$.
+\end{theorem}
+\begin{proof}
+	考虑应用拉格朗日定理，只需证$G^x\leqslant G$且$[G:G^x]=|G(x)|$. 首先，由群作用的定义，易知$G^x$对逆元和乘法运算封闭，即是$G$的一个子群；其次，映射$\psi:G(x)\rightarrow G/G^x, g(x)\longmapsto gG^x$是双射.
+\end{proof}
+
+\begin{lemma}[Burnside引理]
+	设$G$为一个置换群，作用于$X$，定义等价关系$x\textasciitilde y\iff\exists f\in G$满足$f(x)=y$，则$|X/G|:=|X/\textasciitilde|=\frac{1}{|G|}\sum\limits_{g\in G}|X^g|$，其中$X^g:=\{x|x\in X,g(x)=x\}$.
+\end{lemma}
+\begin{proof}
+	由于每个元素仅属于一个轨道，轨道内部在群$G$作用下互相可达，所以$|X/G|=\sum\limits_{x\in X}\frac{1}{[G:G^x]}$，根据轨道-稳定子定理，得$[G:G^x]=\frac{G}{|G^x|}$，进而以$|X/G|=\sum\limits_{x\in X}\frac{|G^x|}{|G|}=\frac{1}{|G|}\sum\limits_{x\in X}|G^x|$，改变求和方式，即得到$|X/G|=\frac{1}{|G|}\sum\limits_{g\in G}|X^g|$.
+\end{proof}
+
+考虑染色问题，设$G$是置换群$S_n$的一个子群，作用于染色方案集合$X$，其中有$m$中不同颜色可染，对于每个置换$g\in G$，可拆分为$c(g)$个不相交循环的乘积（长度为1的循环仍计入），则此时$|X^g|=m^c(g)$. 对这个特殊的例子应用Burnside引理，得到如下定理：
+\begin{theorem}[Pólya定理]
+	染色等价类的数目为$\frac{1}{|G|}\sum\limits_{g\in G}m^{c(g)}$.
+\end{theorem}
+
+设$H,G$为两个群，且$H\leqslant G$，若$\forall a\in G, aH=Ha$，则称$H$为$G$的\textbf{正规子群}，记作$H\lhd G$，此时上述$G/H$连同自然的乘法运算称为$G$在$H$上的\textbf{商群}.
+\begin{remark}
+	正规子群的定义条件等价于：$H$的左陪集与右陪集相等.
+\end{remark}
+
+\subsection{常系数其次线性递推}
+\begin{problem}[常系数其次线性递推]
+	在给定域$K$下，设无穷数列$\{h_n\}$和一个正整数$k$，其中$h_1\cdots h_k$已被给定. 对于$\{h_n\}$的其余项，我们有如下递推关系：$h_i=\sum\limits_{j=1}^k a_jh_{i-j}(i>k)$，其中$a_1\cdots a_k$为给定常数. 此时称数列$\{h_n\}$满足$k$阶其次线性递推关系. 我们的目的就是设计算法去求$h_n$. 
+\end{problem}
+
+\begin{algorithm}[朴素的矩阵快速幂方法]
+	构造向量$[h_{n-1},\cdots,h_{n-k}]$到$[h_n,\cdots,h_{n-k+1}]$的转移矩阵$A$，我们有
+	$$
+	\begin{pmatrix}
+		a_1 & a_2 & \cdots & a_k\\
+		1 & & & \\
+		& \ddots & & \\
+		& & 1 & \\
+	\end{pmatrix}
+	\begin{pmatrix}
+		h_{n-1}\\
+		h_{n-2}\\
+		\vdots\\
+		h_{n-k}\\
+	\end{pmatrix}=
+	\begin{pmatrix}
+		h_n\\
+		h_{n-1}\\
+		\vdots\\
+		h_{n-k+1}\\
+	\end{pmatrix}
+	$$
+	于是累乘可得
+	$$
+	\begin{pmatrix}
+		a_1 & a_2 & \cdots & a_k\\
+		1 & & & \\
+		& \ddots & & \\
+		& & 1 & \\
+	\end{pmatrix}^{n-1}
+	\begin{pmatrix}
+		h_k\\
+		h_{k-1}\\
+		\vdots\\
+		h_1\\
+	\end{pmatrix}=
+	\begin{pmatrix}
+		h_{n+k-1}\\
+		h_{n+k-2}\\
+		\vdots\\
+		h_{n}\\
+	\end{pmatrix}
+	$$
+	利用矩阵快速幂，这个算法的时间复杂度可以达到$O(k^3\log n)$.
+	\label{matdpnoob}
+\end{algorithm}
+
+\begin{theorem}[Cayley-Hamilton定理]
+	线性算子$\mathcal{A}$和它（在任意基底之下）对应的矩阵$A$必然被自己的特征多项式零化，即$\chi_{\mathcal A}(\mathcal A)=\mathcal{O}$. 特别地，对于向量空间$K^n$上的线性算子在标准基下的矩阵$A$，有$\chi_A(A)=0$.
+\end{theorem}
+
+\begin{algorithm}[计算矩阵的多项式]
+	设矩阵$A\in M_n(K)$，多项式$f(t)\in K[t]$，$A$的特征多项式为$\chi_A(t)$，由多项式的带余除法可知，存在多项式$g(t),r(t)$使得$f(t)=g(t)\chi_A(t)+r(t)$，其中$\deg r(t)<n$. 那么由{\rm Caylay-Hamilton}定理知，$\chi_A(A)=0$，故$f(A)=r(A)$.
+\end{algorithm}
+
+\begin{algorithm}[常系数齐次线性递推]
+	可以看到，在算法\ref{matdpnoob}中，只需提升求解$A^{n-1}$的速度即可. 考虑$f(t)=t^{n-1}$，带余除法得存在多项式$g(t),r(t)$使得$f(t)=g(t)\chi_A(t)+r(t)$，其中$\deg r(t)<k$，故$A^m=r(A)=\sum\limits_{i=0}^{k-1} r_i A^i$.
+		
+	其中，$\chi_A(t)=\det(tE-A)=\det
+	\begin{pmatrix}
+		t-a_1 & -a_2 & \cdots & -a_k\\
+		-1 & t & & \\
+		& \ddots & \ddots & \\
+		& & -1 & t\\
+	\end{pmatrix}$
+
+	按第一行展开，可以得到$\chi_A(t)=t^k-a_1 t^{k-1}-a_2 t^{k-2}-\cdots-a_{k-1}t+a_k$.
+	
+	在$A^{n-1}=\sum\limits_{i=0}^{k-1} r_i A^i$的左右两侧同时作用向量$v=[h_k,\cdots,h_1]$，得到$A^{n-1} v=\sum\limits_{i=0}^{k-1} r_i A^i v=\sum\limits_{i=0}^{k-1} r_i [h_{k+i},\cdots,h_{1+i}]$，取这个向量等式的最后一个分量等式，我们就得到了$h_n=\sum\limits_{i=0}^{k-1} r_i h_{1+i}$.
+	
+	该算法的时间复杂度主要集中在多项式快速幂的带余取模上，若$K$上的基本运算是$O(1)$的，采用快速傅里叶变换或其变体，这个算法的总时间复杂度为$O(k\log n\log k)$.
+\end{algorithm}
+
+\subsection{矩阵树定理}
+
+给定环$R$，考虑有$n$个顶点和$e$条边的、边权都在$R$中的无
+向图$G=(V,E)$，令$w(i,j)$为$i$与$j$之间所有的无向边边权之和（若$i$与$j$之间无边则为0），定义它的\textbf{基尔霍夫矩阵}$K$为：
+
+$$
+K_{ij}=\left\{
+\begin{array}{rcl}
+	\sum\limits_{k\neq i}w(i,k) & & i=j\\
+	-w(i,j) & & {i\neq j}
+\end{array} \right.
+$$
+
+我们的目标是求$G$的所有\textbf{生成树的权值}（定义为边权乘积）之和，记$\mathcal{T}$为图$G$所有生成树的集合，即求：$S=\sum\limits_{t\in \mathcal{T}}\prod\limits_{(u,v)\in t}w(u,v)$.
+
+下面我们将证明，$S$的值恰好等于$K$的任意一个$n-1$阶主子式（设为$M$）的行列式.
+
+首先，我们考虑任意一个点作为树根，对于其余的点，我们对每个点任取一条出边，统计它们的边权之积. 由乘法原理，可以得到这个积就是$M$中主对角线元素之积. 如果运气足够好，我们选取的$n-1$条边恰好构成一棵树，但经常性的情形是，我们可能会得到基环树. 为了排除基环树的影响，考虑在连边过程中进行容斥计数：
+
+\begin{itemize}
+	\item 不确定任何环，所有的$n-1$条边任连，贡献为加上前文所述的$M$的主对角线元素之积.
+	\item 确定所有单个环，剩下的边任连，计算这种情况的贡献，并减去它.
+	\item 确定所有不交的两个环，剩下的边任连，计算这种情况的贡献，并加上它.
+	\item ……
+\end{itemize}
+
+因为我们计算的最终结果不含环，不将树根纳入任何计算过程中的环的容斥是正确的. 事实上，只有在边的任连时我们会连接到根结点.
+
+不难注意到，环的枚举相当于不相交轮换的枚举，若将未纳入环中的元素看成是长度为1的轮换，我们可以进一步将环的枚举与的置换（排列）的枚举一一对应. 考虑容斥中的符号与置换符号之间的关系，我们发现，置换$\sigma$的容斥符号为$(-1)^{\text{环的个数}}=(-1)^{\text{多轮换个数}}$，而$\epsilon_{\sigma}=(-1)^{\sum_{\text{轮换}p}(l_p-1)}=(-1)^{(n-1)-\text{轮换总数}}=(-1)^{(n-1)-\text{多轮换个数}-\text{单轮换个数}}$（设单轮换为长度=1的轮换，多轮换为长度>1的轮换）. 进而
+
+\begin{equation}
+	\begin{split}
+		S&=\sum\limits_{\sigma\in S_{n-1}}(-1)^{\text{环的个数}}(\prod\limits_{i\text{在多轮换中}}w(i,\sigma(i)))(\prod\limits_{i\text{在单轮换中}}\sum\limits_{k\neq i}w(i,k))\\
+		&=\sum\limits_{\sigma\in S_{n-1}}(-1)^{\text{多轮换个数}}(\prod\limits_{i\text{在多轮换中}}-M_{i\sigma(i)})(\prod\limits_{i\text{在单轮换中}}M_{ii})\\
+		&=\sum\limits_{\sigma\in S_{n-1}}(-1)^{\text{轮换总数}}(\prod\limits_{i\text{在多轮换中}}-M_{i\sigma(i)})(\prod\limits_{i\text{在单轮换中}}-M_{i\sigma(i)})\\
+		&=\sum\limits_{\sigma\in S_{n-1}}(-1)^{(n-1)-\text{轮换总数}}(\prod\limits_{i\text{在多轮换中}}M_{i\sigma(i)})(\prod\limits_{i\text{在单轮换中}}M_{i\sigma(i)})\\
+		&=\sum\limits_{\sigma\in S_{n-1}}\epsilon_{\sigma}\prod\limits_{i=1}^{n-1}M_{i\sigma(i)}=\det M
+	\end{split}
+\end{equation}
+
+由于根结点选取的任意性，我们得到了如下定理.
+
+\begin{theorem}[无向图的矩阵树定理]
+	$n$个点的无向图$G$的所有生成树权值和等于其基尔霍夫矩阵的任一$n-1$阶主子式的行列式.
+	\label{basic_kirchhoff}
+\end{theorem}
+
+考虑有向图的情形，令$w(i,j)$为所有$i\to j$边的边权之和（若无$i\to j$边则为0），定义外向树的基尔霍夫矩阵$K^o$与内向树的基尔霍夫矩阵$K^i$为：
+
+$$
+K^o_{ij}=\left\{
+\begin{array}{rcl}
+	\sum\limits_{k\neq i}w(k,i) & & i=j\\
+	-w(i,j) & & {i\neq j}
+\end{array} \right.
+$$
+
+$$
+K^i_{ij}=\left\{
+\begin{array}{rcl}
+	\sum\limits_{k\neq i}w(i,k) & & i=j\\
+	-w(i,j) & & {i\neq j}
+\end{array} \right.
+$$
+
+类似无向图的证明方法，不难发现，此时证明过程中选取的根节点就是有向树的树根. 于是我们可以将定理\ref{basic_kirchhoff}推广到有向图的情形.
+
+\begin{theorem}
+	$n$个点的有向图$G$的所有以$i$为根节点的外向树的权值和等于$K^o
+	\begin{pmatrix}
+		1 & \cdots & \hat{i} & \cdots n\\
+		1 & \cdots & \hat{i} & \cdots n\\
+	\end{pmatrix}$，所有以$i$为根节点的内向树的权值和等于$K^i
+	\begin{pmatrix}
+	1 & \cdots & \hat{i} & \cdots n\\
+	1 & \cdots & \hat{i} & \cdots n\\
+	\end{pmatrix}$.
+\end{theorem}
+
+若取环$R=\mathbb{Z}$，对于无边权的图，我们令每条边的边权为1，这样，任意一棵生成树的权值均为1，我们便可以通过定理上述两个定理计算该图不同生成树的数量. 若取环$R=K[t]/t^2$为环$K$上的多项式环$K[t]$模$t^2$的商环，令每条边的边权为$wt+1$，其中$w$为原边权，不难证明，这样计算得的所有生成树的权值和的一次项系数即为所有生成树的边权和的和.
+
+\begin{remark}
+	对于仅仅计算无向图不同生成树的数量的特殊情形，有一个线性代数思想更为浓厚的证明方法，详情请参考\href{https://zhuanlan.zhihu.com/p/108209378}{这篇文章（超链接）}.
+\end{remark}
+
+\subsection{数论}

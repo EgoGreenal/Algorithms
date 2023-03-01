@@ -1,0 +1,23 @@
+\section{分析}
+\subsection{线性规划}
+
+\subsection{数值积分}
+\begin{theorem}[辛普森公式]
+	我们使用抛物线
+\end{theorem}
+\begin{corollary}[三点辛普森公式]
+	$\int_a^bf(x)dx\approx\frac{(b-a)(f(a)+f(b)+4f(\frac{a+b}{2}))}{6}$
+\end{corollary}
+\begin{remark}
+	三点辛普森公式也可直接推导：
+	\begin{equation}
+		\begin{split}
+			\int_a^bf(x)dx&\approx\int_a^bAx^2+Bx+C\\
+			&=\frac{A}{3}(b^3-a^3)+\frac{B}{2}(b^2-a^2)+C(a-b)\\
+			&=\frac{(b-a)}{6}[2A(b^2+ab+a^2)+3B(b+a)+6C]\\
+			&=\frac{(b-a)}{6}(2Ab^2+2Aab+2Aa^2+3Bb+3Ba+6C)\\
+			&=\frac{(b-a)}{6}[Aa^2+Ba+C+Ab^2+Bb+C+4A(\frac{a+b}{2})^2+4B(\frac{a+b}{2})+4C]\\
+			&=\frac{(b-a)}{6}(f(a)+f(b)+4f(\frac{a+b}{2}))
+		\end{split}
+	\end{equation}
+\end{remark}
